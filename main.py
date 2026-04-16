@@ -21,22 +21,20 @@ def fetch_data():
         return pd.DataFrame(response.data)
     return None
 
-# 앱 시작 시 DB에서 데이터 로드
-if st.session_state.main_data is None:
-    st.session_state.main_data = fetch_data()
-
-
-
-# --- 1. 페이지 기본 설정 ---
+# --- 1. 페이지 기본 설정 (무조건 가장 먼저 실행되어야 함) ---
 st.set_page_config(page_title="영업 종합 대시보드", page_icon="💡", layout="wide")
 
-# --- 2. 초기 상태(Session State) 세팅 ---
+# --- 2. 초기 상태(Session State) 세팅 (빈 방부터 먼저 만들기) ---
 if 'main_data' not in st.session_state: st.session_state.main_data = None
 if 'cust_data' not in st.session_state: st.session_state.cust_data = None
 if 'company_goal' not in st.session_state: st.session_state.company_goal = 500000000 # 5억
 if 'rep_goals' not in st.session_state: st.session_state.rep_goals = {}
 if 'rep_list' not in st.session_state: st.session_state.rep_list = []
 if 'deleted_reps' not in st.session_state: st.session_state.deleted_reps = set()
+
+# --- 3. 앱 시작 시 DB에서 데이터 로드 (방이 생겼으니 이제 데이터를 채움) ---
+if st.session_state.main_data is None:
+    st.session_state.main_data = fetch_data()
 
 if 'category_map' not in st.session_state:
     st.session_state.category_map = {
